@@ -78,11 +78,16 @@
         
                         {!! view_render_event('admin.leads.view.person.contact_numbers.before', ['lead' => $lead]) !!}
                     
+                        @php
+                            $userExtension = auth()->user()->extension ?? '1001';
+                        @endphp
+
                         @foreach ($lead->person->contact_numbers as $contactNumber)
                             <div class="flex gap-1">
                                 <a  
                                     class="text-brandColor"
-                                    href="callto:{{ $contactNumber['value'] }}"
+                                    href="javascript:void(0);"
+                                    onclick="clickToCall('{{ $contactNumber['value'] }}', '{{ $userExtension }}')"
                                 >
                                     {{ $contactNumber['value'] }}
                                 </a>
@@ -101,3 +106,5 @@
     </div>
 @endif
 {!! view_render_event('admin.leads.view.person.after', ['lead' => $lead]) !!}
+
+<script src="{{ asset('js/custom.js') }}"></script>

@@ -1,0 +1,79 @@
+# docker-compose.dev.yaml - Versão corrigida
+version: "3.7"
+
+services:
+
+  # Serviço da Aplicação Krayin (PHP + Webserver) para o ambiente de DESENVOLVIMENTO
+  krayin:
+    # Use o build context local com o Dockerfile (que está na mesma pasta)
+    build:
+      context: . # O ponto '.' significa a pasta atual (onde este docker-compose está)
+      dockerfile: Dockerfile # O nome do arquivo Dockerfile na pasta atual
+
+    container_name: krayin_dev # Nome para o container Krayin Dev (opcional)
+
+    volumes:
+      # !!! VOLUME ESSENCIAL PARA DESENVOLVIMENTO !!!
+      # Mapeia a pasta LOCAL (na VPS) onde este docker-compose está (que é ~/gs-crm-dev/laravel-crm)
+      # para a pasta webroot DENTRO do container.
+      # Isso permite que suas edições locais na VPS sejam vistas instantaneamente no container.
+      # O '.' representa a pasta atual (onde está o docker-compose.dev.yaml).
+      - ./:/var/www/html/
+
+      # Mapeia o arquivo .env LOCAL (que está na mesma pasta) para dentro do container.
+      # Isso permite que você edite o .env na VPS e ele seja usado no container.
+      - ./.env:/var/www/html/.env
+
+      # Opcional: Mapear a pasta storage/app/public local para persistência no host da VPS (se necessário)
+      # A pasta local ./storage/app/public será criada se não existir.
+      # - ./storage/app/public:/var/www/html/storage/app/public
+
+      # Opcional: Volume nomeado para cache do Composer (útil para agilizar composer install)
+      # - dev_composer_cache:/root/.composer/cache # Defina este volume na seção volumes: nomeados abaixo
+
+    ports:
+      # Mapeia uma porta LIVRE na sua VPS (Host) para a porta 80 do container (Webserver do Krayin).
+      # Use uma porta que não conflite com outros serviços (como a sua Stack de produção).
+      # Ex: use 8080 se a produção usar 80 na VPS.
+      - "8080:80" # <--- Porta da VPS : Porta do Container (80 padrão web)
+
+    # Este container não depende de um serviço DB nesta Stack, pois usaremos o DB existente.
+    # depends_on: ... (removido ou comentado se apontava para um serviço local)
+
+    environment:
+      # Variáveis de ambiente básicas para o ambiente de aplicação
+      APP_ENV: local
+      APP_DEBUG: "true"
+      # Remova quaisquer outras variáveis de ambiente específicas das Stacks de produção que sobraram
+
+    # Remova a seção deploy inteira, ela é para Docker Swarm (produção)
+    # deploy: ...
+    
+    networks:
+      # Conecta o container à rede externa do MySQL existente (GenialityNet)
+      - GenialityNet # <--- Nome da rede externa que já existe no Docker
+      
+# --- DEFINIÇÃO DOS VOLUMES NOMEADOS GERENCIADOS PELO DOCKER ---
+# Estes volumes são criados e gerenciados pelo Docker.
+# Cada volume nomeado deve ser seguido por ':' e uma definição (que pode ser apenas '{}' se não houver opções extras)
+volumes:
+  # Volume nomeado para os dados do banco de dados MySQL de desenvolvimento
+  # A SINTAXE CORRETA É O NOME DO VOLUME SEGUIDO POR DOIS PONTOS
+  dev_mysql_data: {} # <--- SINTAXE CORRETA: nome_do_volume: {} ou com opções indentadas abaixo
+
+  # Opcional: Definição do volume nomeado para cache do Composer (se usado no serviço krayin)
+  # dev_composer_cache: {} # <--- SINTAXE CORRETA
+
+  # !!! CERTIFIQUE-SE DE QUE NÃO HÁ NENHUMA LINHA AQUI QUE NÃO SEJA UM NOME DE VOLUME SEGUIDO POR ':' !!!
+  # Remova qualquer linha solta, nome de volume sem ':' ou definições de volume externo que estejam AQUI por engano.
+  # Ex: Se sobrou uma linha assim:
+  # mysql_data: <--- ISSO CAUSARIA O ERRO SE NÃO TIVER NADA ABAIXO COM INDENTAÇÃO
+
+# --- DEFINIÇÃO DAS REDES ---
+# Definimos a rede compartilhada como EXTERNA, apontando para a rede REAL que o MySQL existente usa
+networks:
+  # !!! ESTE NOME DEVE SER EXATAMENTE O NOME DA REDE EXTERNA DO SEU MYSQL EXISTENTE !!!
+  GenialityNet: # <--- Nome da rede
+    external: true # Indica que esta rede já existe e foi criada fora desta Stack
+    # Opcional: Se o nome da rede externa no sistema Docker for diferente da chave acima, use 'name:'
+    # name: NomeRealDaRedeExterna
