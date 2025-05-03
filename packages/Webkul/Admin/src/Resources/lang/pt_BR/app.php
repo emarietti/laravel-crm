@@ -363,7 +363,7 @@ return [
 
         'layouts' => [
             'powered-by' => [
-                'description' => 'Desenvolvido por :krayin, um projeto de código aberto da :webkul.',
+                'description' => ':krayin - Inteligência Real!',
             ],
 
             'header' => [

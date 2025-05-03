@@ -123,8 +123,8 @@
         <!-- Powered By -->
         <div class="text-sm font-normal">
             @lang('admin::app.components.layouts.powered-by.description', [
-                'krayin' => '<a class="text-brandColor hover:underline " href="https://krayincrm.com/">Krayin</a>',
-                'webkul' => '<a class="text-brandColor hover:underline " href="https://webkul.com/">Webkul</a>',
+                'krayin' => '<a class="text-brandColor hover:underline " href="https://ia.geniality.com.br/">Geniality</a>',
+                'webkul' => '<a class="text-brandColor hover:underline " href="https://www.geniality.com.br/">Software</a>',
             ]) 
         </div>
     </div>

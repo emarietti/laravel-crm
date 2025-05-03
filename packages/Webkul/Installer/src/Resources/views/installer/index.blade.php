@@ -256,7 +256,7 @@
                         <p class="mb-6 w-full place-self-end text-left">
                             <a
                                 class="bg-white text-brandColor underline"
-                                href="https://krayincrm.com/"
+                                href="https://ia.geniality.com.br/"
                                 target="_blank"
                             >
                                 @lang('installer::app.installer.index.krayin')
@@ -266,7 +266,7 @@
 
                             <a
                                 class="bg-white text-brandColor underline"
-                                href="https://webkul.com/"
+                                href="https://www.geniality.com.br/"
                                 target="_blank"
                             >
                                 @lang('installer::app.installer.index.webkul')

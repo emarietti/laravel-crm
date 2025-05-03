@@ -1,0 +1,38 @@
+# .dockerignore file for Krayin CRM Docker build
+# Located in gs-crm-dev/.dockerignore
+# Paths are relative to the build context root (gs-crm-dev)
+
+# --- Ignorar arquivos de controle de versão ---
+laravel-crm/.git/             
+laravel-crm/.gitattributes    
+laravel-crm/.gitignore        
+
+# --- Ignorar arquivos de configuração de ambiente local e de dev/CI ---
+laravel-crm/.env                  
+laravel-crm/.editorconfig         
+laravel-crm/.styleci.yml          
+laravel-crm/.github/              
+laravel-crm/docker-compose.dev.yaml
+laravel-crm/setup_db.sh           
+laravel-crm/supervisord.log       
+laravel-crm/supervisord.pid       
+
+# --- Ignorar dependências instaladas localmente ---
+# Elas serão instaladas DENTRO do container durante o build
+laravel-crm/node_modules/       
+laravel-crm/vendor/             
+
+# --- Ignorar arquivos de teste e configuração de teste ---
+laravel-crm/tests/                
+laravel-crm/phpunit.xml           
+laravel-crm/pint.json             
+
+# --- Ignorar documentação (Opcional para imagem menor) ---
+laravel-crm/CHANGELOG.md
+laravel-crm/CODE_OF_CONDUCT.md
+laravel-crm/LICENSE
+laravel-crm/README.md
+
+# --- Ignorar pasta de storage local ---
+# O conteúdo virá do volume persistente. A estrutura será criada no Dockerfile.
+laravel-crm/storage/
