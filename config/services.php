@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'dialer' => [
+        'api_token' => env('DIALER_API_TOKEN'),
+    ],
+
 ];

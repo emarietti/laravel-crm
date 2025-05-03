@@ -40,6 +40,7 @@
             }}
         "
     >
+    <meta name="dialer-api-token" content="{{ $dialerApiToken }}">
 
     @stack('meta')
 

@@ -7,6 +7,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Webkul\User\Contracts\User as UserContract;
+use Webkul\Contact\Models\Person;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable implements UserContract
 {
@@ -99,5 +101,37 @@ class User extends Authenticatable implements UserContract
         }
 
         return in_array($permission, $this->role->permissions);
+    }
+
+    /**
+     * Get the person associated with the user.
+     */
+    public function person()
+    {
+        return Person::query()
+            ->whereJsonContains('emails', [['value' => $this->email]])
+            ->first();
+    }
+
+    /**
+     * Get the extension (user_extension) of the user.
+     */
+    public function getExtensionAttribute()
+    {
+        $person = $this->person();
+
+        if (! $person) {
+            return null;
+        }
+
+        $attributeId = DB::table('attributes')
+            ->where('code', 'user_extension')
+            ->value('id');
+
+        return DB::table('attribute_values')
+            ->where('entity_type', 'persons')
+            ->where('entity_id', $person->id)
+            ->where('attribute_id', $attributeId)
+            ->value('text_value');
     }
 }

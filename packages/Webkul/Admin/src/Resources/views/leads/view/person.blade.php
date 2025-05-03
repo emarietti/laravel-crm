@@ -79,7 +79,7 @@
                         {!! view_render_event('admin.leads.view.person.contact_numbers.before', ['lead' => $lead]) !!}
                     
                         @php
-                            $userExtension = auth()->user()->extension ?? '1001';
+                            $userExtension = auth()->user()->extension ?? '1000';
                         @endphp
 
                         @foreach ($lead->person->contact_numbers as $contactNumber)
@@ -108,3 +108,17 @@
 {!! view_render_event('admin.leads.view.person.after', ['lead' => $lead]) !!}
 
 <script src="{{ asset('js/custom.js') }}"></script>
+
+<script>
+    console.log('User Email: {{ auth()->user()->email }}');
+    console.log('User Extension: {{ auth()->user()->extension }}');
+</script>
+
+<script>
+    const person = @json(auth()->user()->person());
+    if (person) {
+        console.log('Person Name: ' + person.name);
+    } else {
+        console.log('Person not found for user email: {{ auth()->user()->email }}');
+    }
+</script>
