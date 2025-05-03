@@ -97,14 +97,15 @@
 
                             <!-- Title -->
                             <x-admin::form.control-group>
-                                <x-admin::form.control-group.label class="required">
+                                <x-admin::form.control-group.label>
                                     @lang('admin::app.components.activities.actions.activity.title-control')
                                 </x-admin::form.control-group.label>
                                 
                                 <x-admin::form.control-group.control
                                     type="text"
                                     name="title"
-                                    rules="required|max:80"
+                                    v-model="title"
+                                    rules="max:80"
                                     :label="trans('admin::app.components.activities.actions.activity.title-control')"
                                 />
 
@@ -120,6 +121,7 @@
                                 <x-admin::form.control-group.control
                                     type="textarea"
                                     name="comment"
+                                    v-model="description"
                                     rules="max:500"
                                 />
 
@@ -139,15 +141,15 @@
                             <div class="flex gap-4">
                                 <!-- Started From -->
                                 <x-admin::form.control-group class="w-full">
-                                    <x-admin::form.control-group.label class="required">
+                                    <x-admin::form.control-group.label>
                                         @lang('admin::app.components.activities.actions.activity.schedule-from')
                                     </x-admin::form.control-group.label>
                                     
                                     <x-admin::form.control-group.control
                                         type="datetime"
                                         name="schedule_from"
-                                        rules="required"
                                         :label="trans('admin::app.components.activities.actions.activity.schedule-from')"
+                                        v-model="schedule_from"
                                     />
 
                                     <x-admin::form.control-group.error control-name="schedule_from" />
@@ -155,15 +157,15 @@
                                 
                                 <!-- Started To -->
                                 <x-admin::form.control-group class="w-full">
-                                    <x-admin::form.control-group.label class="required">
+                                    <x-admin::form.control-group.label>
                                         @lang('admin::app.components.activities.actions.activity.schedule-to')
                                     </x-admin::form.control-group.label>
                                     
                                     <x-admin::form.control-group.control
                                         type="datetime"
                                         name="schedule_to"
-                                        rules="required"
                                         :label="trans('admin::app.components.activities.actions.activity.schedule-to')"
+                                        v-model="schedule_to"
                                     />
 
                                     <x-admin::form.control-group.error control-name="schedule_to" />
@@ -244,8 +246,47 @@
                         }, {
                             label: "{{ trans('admin::app.components.activities.actions.activity.lunch') }}",
                             value: 'lunch'
+                        }
+                    ],
+
+                    defaultValues: {
+                        call: {
+                            title: 'Chamada Programada',
+                            description: 'Discutir detalhes do projeto.',
+                            schedule_from: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19),
+                            schedule_to: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 + 30 * 60000).toISOString().replace('T', ' ').slice(0, 19) // 30 minutes later
                         },
-                    ]
+                        meeting: {
+                            title: 'Reunião de Apresentação',
+                            description: 'Apresentar nossas soluções.',
+                            schedule_from: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19),
+                            schedule_to: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 + 60 * 60000).toISOString().replace('T', ' ').slice(0, 19) // 1 hour later
+                        },
+                        lunch: {
+                            title: 'Mensagem Programada',
+                            description: 'Olá! Tá podendo falar agora?',
+                            schedule_from: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19),
+                            schedule_to: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 + 90 * 60000).toISOString().replace('T', ' ').slice(0, 19) // 1.5 hours later
+                        }
+                    },
+
+                    title: '',
+                    description: '',
+                    schedule_from: '',
+                    schedule_to: ''
+                };
+            },
+
+            watch: {
+                selectedType: {
+                    handler(newType) {
+                        const defaults = this.defaultValues[newType.value] || {};
+                        this.title = defaults.title || '';
+                        this.description = defaults.description || '';
+                        this.schedule_from = defaults.schedule_from || '';
+                        this.schedule_to = defaults.schedule_to || '';
+                    },
+                    immediate: true
                 }
             },
 

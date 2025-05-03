@@ -1944,12 +1944,12 @@ return [
             ],
 
             'stages' => [
-                'won-lost'       => 'Ganho/Perdido',
-                'won'            => 'Ganho',
-                'lost'           => 'Perdido',
+                'won-lost'       => 'Ganha/Perdida',
+                'won'            => 'Ganha',
+                'lost'           => 'Perdida',
                 'need-more-info' => 'Precisa de Mais Informações',
-                'closed-at'      => 'Fechado em',
-                'won-value'      => 'Valor Ganhado',
+                'closed-at'      => 'Fechada em',
+                'won-value'      => 'Valor Conquistado',
                 'lost-reason'    => 'Motivo da Perda',
                 'save-btn'       => 'Salvar',
             ],
@@ -2088,8 +2088,8 @@ return [
             'title' => 'Início',
 
             'revenue' => [
-                'lost-revenue' => 'Oportunidades Perdidas',
-                'won-revenue'  => 'Oportunidades Conquistadas',
+                'lost-revenue' => 'Perdidas',
+                'won-revenue'  => 'Conquistadas',
             ],
 
             'over-all' => [
